@@ -1,0 +1,153 @@
+<!-- 
+
+
+  <input type="text"
+         style="padding:8px;margin:15px auto;width:30%;"
+         placeholder="Type to filter the name column..."
+         (keyup)="updateFilter($event)" />
+  <ngx-datatable #table
+  class="material"
+                 [rows]="rows"
+                 [loadingIndicator]="loadingIndicator"
+                 [columnMode]="ColumnMode.force"
+                 headerHeight="50"
+                 footerHeight="50"
+                 rowHeight="auto"
+                 limit="3">
+
+    <ngx-datatable-column name="Product"
+                          prop="productName"
+                          width="80">
+      <ng-template ngx-datatable-cell-template
+                   let-rowIndex="rowIndex"
+                   let-value="value"
+                   let-row="row">
+        <span title="Double click to edit"
+              (dblclick)="editing[rowIndex + '-productaName'] = true"
+              *ngIf="!editing[rowIndex + '-productName']">
+          {{ value }}
+        </span>
+        <input autofocus
+               (blur)="updateValue($event, 'productName', rowIndex)"
+               *ngIf="editing[rowIndex + '-productName']"
+               type="text"
+               [value]="value" />
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Code"
+                          prop="productCode"
+                          width="300">
+      <ng-template ngx-datatable-cell-template
+                   let-rowIndex="rowIndex"
+                   let-value="value"
+                   let-row="row">
+        <span title="Double click to edit"
+              (dblclick)="editing[rowIndex + '-productCode'] = true"
+              *ngIf="!editing[rowIndex + '-productCode']">
+          {{ value }}
+        </span>
+        <input autofocus
+               (blur)="updateValue($event, 'productCode', rowIndex)"
+               *ngIf="editing[rowIndex + '-productCode']"
+               type="text"
+               [value]="value" />
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Price"
+                          width="300">
+      <ng-template ngx-datatable-cell-template
+                   let-rowIndex="rowIndex"
+                   let-value="value"
+                   let-row="row">
+        <span title="Double click to edit"
+              (dblclick)="editing[rowIndex + '-price'] = true"
+              *ngIf="!editing[rowIndex + '-price']">
+          {{ value }}
+        </span>
+        <input autofocus
+               (blur)="updateValue($event, 'price', rowIndex)"
+               *ngIf="editing[rowIndex + '-price']"
+               type="text"
+               [value]="value" />
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="In Stock"
+                          prop="quantityInStock"
+                          width="300">
+      <ng-template ngx-datatable-cell-template
+                   let-rowIndex="rowIndex"
+                   let-value="value"
+                   let-row="row">
+        <span title="Double click to edit"
+              (dblclick)="editing[rowIndex + '-quantityInStock'] = true"
+              *ngIf="!editing[rowIndex + '-quantityInStock']">
+          {{ value }}
+        </span>
+        <select *ngIf="editing[rowIndex + '-quantityInStock']"
+                (blur)="editing[rowIndex + '-quantityInStock'] = false"
+                (change)="updateValue($event, 'quantityInStock', rowIndex)"
+                [value]="value">
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+      </ng-template>
+    </ngx-datatable-column>
+
+
+  </ngx-datatable>
+  <br /> -->
+
+  <div class="card">
+      <div class="card-header">
+        {{pageTitle}}
+      </div>
+    
+<div class="row justify-content-between">
+    <div class="col-3">
+      <select class="form-control"
+              (change)="onSelected($event.target.value)">
+        <option value="0">- Display All -</option>
+        <option *ngFor="let category of categories$ | async"
+                [value]="category.id">{{ category.name }}</option>
+      </select>
+    </div>
+    <div class="col-2">
+      <button type="button"
+              class="btn btn-outline-secondary"
+              (click)="onAdd()">Add Product</button>
+    </div>
+  </div>
+</div>
+<div class="card-body">
+  <div class="container">
+    <div class="table-responsive">
+      <table class="table mb-0"
+             *ngIf="products$ | async as products">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Code</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>In Stock</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let product of products">
+          <tr>
+            <td>{{ product.productName }}</td>
+            <td>{{ product.productCode }}</td>
+            <td>{{ product.category }}</td>
+            <td>{{ product.price | currency:"USD":"symbol":"1.2-2" }}</td>
+            <td>{{ product.quantityInStock }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div> 
+
+   </div> 
+</div>
+
+ <div class="alert alert-danger"
+     *ngIf="errorMessage">
+  {{ errorMessage }}
+</div> 
